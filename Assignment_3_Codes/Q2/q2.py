@@ -4,7 +4,7 @@ import random
 import time
 
 
-GRID_SIZE   = 40          # 30x30 grid (represents 30x30 km)
+GRID_SIZE   = 40          # 40x40 grid (represents 30x30 km)
 DENSITY_MAP = {"low": 0.10, "medium": 0.25, "high": 0.40}
 
 MOVES = [#change in value and cost
