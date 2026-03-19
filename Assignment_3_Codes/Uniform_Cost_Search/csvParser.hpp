@@ -4,6 +4,7 @@
 #include <fstream>
 #include <ios>
 #include <sstream>
+#include <stdexcept>
 #include <string>
 #include <unordered_map>
 #include <vector>
@@ -15,10 +16,13 @@ public:
     IndianCitiesDataset(){
         std::fstream fin;
         fin.open("indian-cities-dataset.csv",std::ios::in);
+        if(!fin.is_open())throw std::runtime_error("Failed to open csv file");
 
         std::vector<std::string> row;
         std::string line, word, temp;
-        while(fin >> temp){
+        bool firstLine=true;
+        while(getline(fin, line)){
+            if(firstLine){firstLine=false;continue;}
             row.clear();
 
             getline(fin, line);
@@ -28,14 +32,16 @@ public:
                 row.push_back(word);
             }
 
+            if(row.size() < 3) continue;
+
             this->mp[row[0]].push_back({row[1],stoi(row[2])});
         }
 
         fin.close();
     }
 
-    std::vector<std::pair<std::string,int>> getOutCityDists(std::string startCity){
-        return this->mp[startCity];
+    const std::vector<std::pair<std::string,int>>& getOutCityDists(std::string startCity){
+        return mp[startCity];
     }
 };
 
