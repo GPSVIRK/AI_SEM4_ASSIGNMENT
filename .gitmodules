@@ -1,9 +1,0 @@
-[submodule "Uninformed-Search-Implementation"]
-	path = Uninformed-Search-Implementation
-	url = https://github.com/GPSVIRK/Uninformed-Search-Implementation
-[submodule "Basic-Captcha-implementation"]
-	path = Basic-Captcha-implementation
-	url = https://github.com/GPSVIRK/Basic-Captcha-implementation
-[submodule "aqi-agent"]
-	path = aqi-agent
-	url = https://github.com/Aneeshie/aqi-agent
