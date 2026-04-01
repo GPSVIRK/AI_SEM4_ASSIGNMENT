@@ -31,12 +31,12 @@ class StateDistrictConnections{
         fin.close();
     }
 
-    vector<vector<int>> adjList(){
+    vector<vector<int>> adjList(string fileName){
         vector<vector<int>> ret(this->names.size());//ind->list of inds its connected to
 
         fstream fin;
 
-        fin.open("telangana.csv",ios::in);
+        fin.open(fileName,ios::in);
         if(!fin.is_open()) throw runtime_error("Failed to open csv file");
 
         vector<string> row;
