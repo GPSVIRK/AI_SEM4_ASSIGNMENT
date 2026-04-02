@@ -1,3 +1,4 @@
+#include <cstdlib>
 #include <fstream>
 #include <vector>
 #include <string>
@@ -92,6 +93,13 @@ int main(){
     jsonFile << ",";
     writeToJSONFile(jsonFile, "tel", tel->names, telCol);
     jsonFile << "}";
+
+    jsonFile.close();
+
+    int ret=system("python mapColouringVisualiser.py");
+    if(ret!=0){
+        cerr << "Python script failed\n";
+    }
 }
 
 void writeToJSONFile(ofstream& jsonFile, string countryState, vector<string>& names, vector<int>& colours){
