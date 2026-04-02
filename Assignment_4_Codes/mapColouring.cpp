@@ -1,7 +1,13 @@
-#include <bits/stdc++.h>
+#include <fstream>
+#include <vector>
+#include <string>
+#include <algorithm>
+#include <iostream>
 #include "state_district_connections.hpp"
 
 using namespace std;
+
+void writeToJSONFile(ofstream& jsonFile, string countryState, vector<string>& names, vector<int>& colours);
 
 bool backTrack(int maxCol, vector<vector<int>>& adj, vector<bool>& visited, vector<vector<int>>& forbiddenColours, vector<int>& colours){
     if(find(visited.begin(), visited.end(), false) == visited.end()){
@@ -45,19 +51,20 @@ bool backTrack(int maxCol, vector<vector<int>>& adj, vector<bool>& visited, vect
     return false;
 }
 
-void solver(StateDistrictConnections* place, vector<vector<int>>& adj){
+vector<int> solver(vector<vector<int>>& adj){
     int maxCol=adj.size();
     vector<bool> visited(adj.size(), false);
     vector<vector<int>> forbiddenColours(adj.size());
     vector<int> colours(adj.size(),0);
+
     bool res = backTrack(maxCol, adj, visited, forbiddenColours, colours);
 
-    if(res == false) cout << "no possible solution\n";
-    else{
-        for(int i=0 ; i<colours.size() ; ++i){
-            cout << place->names[i] << " = " << colours[i] << "\n";
-        }
+    if(res == false) {
+        cout << "no possible solution\n";
+        return vector<int>();//there will always be a solution, so this is unessecary
     }
+
+    return colours;
 }
 
 int main(){
@@ -71,17 +78,31 @@ int main(){
 
     //Australia:
 
-    cout << "Australian States:\n\n";
-    solver(aus, ausAdj);
+    vector<int> ausCol = solver(ausAdj);
 
     //Telangana:
-    cout << "\nTelangana Districts:\n\n";
 
-    solver(tel, telAdj);
+    vector<int> telCol = solver(telAdj);
+
+    //convert to JSON for communication
+
+    ofstream jsonFile("result.json");
+    jsonFile << "{";
+    writeToJSONFile(jsonFile, "aus", aus->names, ausCol);
+    jsonFile << ",";
+    writeToJSONFile(jsonFile, "tel", tel->names, telCol);
+    jsonFile << "}";
 }
-/*
-* so the way it works is like you maintain a set for each of the things
-* this is the domain for each of them and we want to prune this domain when we assign something
-* so we assign then we prune for the neighbors
-* we choose the thing by which one has the most neighbors at every step
-*/
+
+void writeToJSONFile(ofstream& jsonFile, string countryState, vector<string>& names, vector<int>& colours){
+    jsonFile << '"' << countryState << '"' << ":{";
+
+    int n = names.size();
+
+    for(int i=0 ; i<n ; ++i){
+        jsonFile << '"' << names[i] << '"' << ':' << colours[i];
+        if(i<n-1) jsonFile << ',';
+    }
+
+    jsonFile << "}";
+}

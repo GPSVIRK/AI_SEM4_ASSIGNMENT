@@ -1,9 +1,10 @@
 #ifndef STATEDISTRICT_H
 #define STATEDISTRICT_H
 
-#include <algorithm>
-#include <bits/stdc++.h>
 #include <fstream>
+#include <algorithm>
+#include <vector>
+#include <sstream>
 #include <ios>
 #include <stdexcept>
 
